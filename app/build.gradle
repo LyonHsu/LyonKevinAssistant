@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "lyon.kevin.googlethings.assistant"
+        minSdkVersion 27
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //20190803 sphinx
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    dexOptions {
+        preDexLibraries = false
+    }
+}
+
+dependencies {
+    implementation project(':grpc')
+    compileOnly 'com.google.android.things:androidthings:1.0'
+
+    implementation('com.google.auth:google-auth-library-oauth2-http:0.6.0') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+
+    implementation 'com.google.android.things.contrib:driver-voicehat:1.0'
+    implementation 'com.android.support:support-annotations:27.1.0'
+    implementation 'androidx.core:core:1.1.0'
+
+}
