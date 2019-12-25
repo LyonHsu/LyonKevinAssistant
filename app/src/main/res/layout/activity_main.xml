@@ -26,6 +26,11 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     tools:context=".AssistantActivity">
+    <lyon.kevin.googlethings.assistant.NetWork.NetWork
+        android:id="@+id/network"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+    </lyon.kevin.googlethings.assistant.NetWork.NetWork>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -36,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_new_request"
+            android:background="@drawable/btn_blue"
             android:layout_centerHorizontal="true"
             android:id="@+id/assistantQueryButton" />
         <CheckBox
@@ -43,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:id="@+id/htmlOutput"
+            android:background="@drawable/btn_blue"
             android:text="HTML Output"/>
     </LinearLayout>
 

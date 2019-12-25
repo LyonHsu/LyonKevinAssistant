@@ -52,4 +52,5 @@ dependencies {
     //20190803 sphinx
     implementation 'javax.annotation:javax.annotation-api:1.2'
     implementation files('libs/pocketsphinx-android-5prealpha-release.aar')
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

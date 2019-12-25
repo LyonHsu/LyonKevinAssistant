@@ -55,5 +55,8 @@ package="lyon.kevin.googlethings.assistant">
                         </intent-filter>
             -->
         </activity>
+        <activity
+            android:name=".NetWork.WifiSetting.WifiMenu"
+            android:screenOrientation="landscape" />
     </application>
 </manifest>
