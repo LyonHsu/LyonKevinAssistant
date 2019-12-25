@@ -94,4 +94,20 @@ public class Utils {
         }
         return isPiDevice;
     }
+
+    public static String[] getAutoJumpLogInfos() {
+        String[] infos = new String[]{"", "", ""};
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        if (elements.length < 5) {
+            Log.e("MyLogger", "Stack is too shallow!!!");
+            return infos;
+        } else {
+            infos[0] = elements[4].getClassName().substring(
+                    elements[4].getClassName().lastIndexOf(".") + 1);
+            infos[1] = elements[4].getMethodName() + "()";
+            infos[2] = " at (" + elements[4].getClassName() + ".java:"
+                    + elements[4].getLineNumber() + ")";
+            return infos;
+        }
+    }
 }

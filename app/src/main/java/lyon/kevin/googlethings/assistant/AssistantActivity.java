@@ -68,7 +68,7 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
     // Peripheral and drivers constants.
     private static final int BUTTON_DEBOUNCE_DELAY_MS = 20;
     // Default on using the Voice Hat on Raspberry Pi 3.
-    private static final boolean USE_VOICEHAT_I2S_DAC = Build.DEVICE.equals(BoardDefaults.DEVICE_RPI3);
+    public static final boolean USE_VOICEHAT_I2S_DAC = Build.DEVICE.equals(BoardDefaults.DEVICE_RPI3);
 
     // Audio constants.
     private static final String PREF_CURRENT_VOLUME = "current_volume";

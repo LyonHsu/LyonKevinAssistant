@@ -44,13 +44,22 @@
             android:background="@drawable/btn_blue"
             android:layout_centerHorizontal="true"
             android:id="@+id/assistantQueryButton" />
+        <Button
+            android:id="@+id/blueToothBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_blue"
+            android:text="bluetooth connect" />
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
             android:id="@+id/htmlOutput"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/btn_blue"
             android:text="HTML Output"/>
+
+
     </LinearLayout>
 
     <FrameLayout

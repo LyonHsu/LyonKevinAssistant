@@ -19,7 +19,8 @@ public class Log {
                 jsonObject.put("Type","Logd");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }catch (NullPointerException e){
@@ -37,7 +38,8 @@ public class Log {
                 jsonObject.put("Type","Logi");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }catch (NullPointerException e){
@@ -53,7 +55,8 @@ public class Log {
                 jsonObject.put("Type","Loge");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
             }catch (NullPointerException e){
@@ -70,7 +73,8 @@ public class Log {
                 jsonObject.put("Type","Loge");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg+" e:"+e);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }catch (NullPointerException e1){
@@ -87,7 +91,8 @@ public class Log {
                 jsonObject.put("Type","Logw");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }catch (NullPointerException e){
@@ -104,7 +109,8 @@ public class Log {
                 jsonObject.put("Type","Logv");
                 jsonObject.put("TAG",TAG);
                 jsonObject.put("MSG",msg);
-
+                if(AppController.getInstance().getBluetoothTool()!=null)
+                    AppController.getInstance().getBluetoothTool().bluetoothWrite(jsonObject);
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }catch (NullPointerException e){

@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 
 import java.util.Locale;
 
+import lyon.kevin.googlethings.assistant.BlueTooth.BluetoothTool;
 import lyon.kevin.googlethings.assistant.Tool.Log;
 
 public class AppController extends Application {
@@ -19,6 +20,8 @@ public class AppController extends Application {
             "com.example.androidthings.bluetooth.audio.UTTERANCE_ID";
 
     AssistantActivity assistantActivity;
+    BluetoothTool bluetoothTool;
+
 
     @Override
     public void onCreate() {
@@ -63,7 +66,13 @@ public class AppController extends Application {
         return assistantActivity;
     }
 
+    public BluetoothTool getBluetoothTool(){
+        return bluetoothTool;
+    }
 
+    public void setBluetoothTool(BluetoothTool bluetoothTool){
+        this.bluetoothTool=bluetoothTool;
+    }
 
 
 }

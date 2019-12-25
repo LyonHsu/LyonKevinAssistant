@@ -58,5 +58,8 @@ package="lyon.kevin.googlethings.assistant">
         <activity
             android:name=".NetWork.WifiSetting.WifiMenu"
             android:screenOrientation="landscape" />
+
+        <service android:name=".BlueTooth.BluetoothService" android:enabled="true"/>
+
     </application>
 </manifest>
