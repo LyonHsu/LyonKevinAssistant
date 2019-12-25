@@ -56,7 +56,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class EmbeddedAssistant {
+public class EmbeddedAssistant extends SphinxAssistant {
     private static final String TAG = EmbeddedAssistant.class.getSimpleName();
     private static final boolean DEBUG = false;
 
@@ -160,7 +160,7 @@ public class EmbeddedAssistant {
                             }
                         });
                     }
-                    if (value.getDialogStateOut() != null) {
+                    if (value.getDialogStateOut() != null && !isSpecialRequest) {
                         mConversationState = value.getDialogStateOut().getConversationState();
                         if (value.getDialogStateOut().getVolumePercentage() != 0) {
                             final int volumePercentage = value.getDialogStateOut().getVolumePercentage();
@@ -268,6 +268,10 @@ public class EmbeddedAssistant {
                         mConversationHandler.post(new Runnable() {
                             @Override
                             public void run() {
+
+                                //stop audioRecord That Sphinx can listant
+                                mAudioRecord.stop();
+
                                 mConversationCallback.onConversationFinished();
                             }
                         });
@@ -318,6 +322,9 @@ public class EmbeddedAssistant {
      * Starts a request to the Assistant.
      */
     public void startConversation() {
+
+        isSpecialRequest=false;
+
         mAudioRecord.startRecording();
         mRequestHandler.post(new Runnable() {
             @Override
@@ -385,7 +392,8 @@ public class EmbeddedAssistant {
     /**
      * Manually ends a conversation with the Assistant.
      */
-    public void stopConversation() {
+    public void stopConversation(boolean isSpecialRequest) {
+        this.isSpecialRequest=isSpecialRequest;
         mAssistantHandler.post(new Runnable() {
             @Override
             public void run() {

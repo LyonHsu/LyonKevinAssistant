@@ -4,6 +4,9 @@
     <string name="button_retry">Retry</string>
     <string name="button_listening">Listening</string>
 
+    <string name="AudioRecordtitle">Audio Record error</string>
+    <string name="AudioRecordPermission">本功能需開啟麥克風才可進行下一步設定, 請確認是否要開啟麥克風?</string>
+
 
     <!--Wifi NetWork-->
     <string name="wifistatus">Ｗifi Status：</string>

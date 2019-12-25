@@ -17,7 +17,10 @@
 package lyon.kevin.googlethings.assistant;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.AudioDeviceInfo;
@@ -25,7 +28,9 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.util.Base64;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +42,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import lyon.kevin.googlethings.assistant.EmbeddedAssistant.ConversationCallback;
 import lyon.kevin.googlethings.assistant.EmbeddedAssistant.RequestCallback;
+import lyon.kevin.googlethings.assistant.Sphinx.CapTechSphinxManager;
+import lyon.kevin.googlethings.assistant.TextToSpeech.LyonTextToSpeech;
 import lyon.kevin.googlethings.assistant.Tool.Log;
 import lyon.kevin.googlethings.assistant.Tool.Utils;
 
@@ -55,7 +62,7 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AssistantActivity extends Activity implements Button.OnButtonEventListener {
+public class AssistantActivity extends SphinxActivity implements Button.OnButtonEventListener  {
     private static final String TAG = AssistantActivity.class.getSimpleName();
 
     // Peripheral and drivers constants.
@@ -76,17 +83,19 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
     // Hardware peripherals.
     private Button mButton;
     private android.widget.Button mButtonWidget;
-    private Gpio mLed;
+//    private Gpio mLed;
     private Max98357A mDac;
 
     private Handler mMainHandler;
 
     // List & adapter to store and display the history of Assistant Requests.
-    private EmbeddedAssistant mEmbeddedAssistant;
+//    private EmbeddedAssistant mEmbeddedAssistant;
     private ArrayList<String> mAssistantRequests = new ArrayList<>();
     private ArrayAdapter<String> mAssistantRequestsAdapter;
     private CheckBox mHtmlOutputCheckbox;
     private WebView mWebView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +127,11 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
         mButtonWidget.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEmbeddedAssistant.startConversation();
+                //Sphinx
+                if (mEmbeddedAssistant != null) {
+                    captechSphinxManager.SpeechRecognizerStop();
+                    mEmbeddedAssistant.startConversation();
+                }
             }
         });
 
@@ -127,18 +140,39 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
         AudioDeviceInfo audioInputDevice = null;
         AudioDeviceInfo audioOutputDevice = null;
         if (USE_VOICEHAT_I2S_DAC) {
-            audioInputDevice = findAudioDevice(AudioManager.GET_DEVICES_INPUTS, AudioDeviceInfo.TYPE_BUS);
-            if (audioInputDevice == null) {
-                Log.e(TAG, "failed to find I2S audio input device, using default");
-            }
-            audioOutputDevice = findAudioDevice(AudioManager.GET_DEVICES_OUTPUTS, AudioDeviceInfo.TYPE_BUS);
-            if (audioOutputDevice == null) {
-                Log.e(TAG, "failed to found I2S audio output device, using default");
+            if (MainActivity.isGoogleAIY) {
+                audioInputDevice = findAudioDevice(AudioManager.GET_DEVICES_INPUTS, AudioDeviceInfo.TYPE_BUS);//TYPE_USB_DEVICE ,TYPE_BUS
+                if (audioInputDevice == null) {
+                    Log.e(TAG, "failed to find I2S audio input device, using default");
+                } else {
+                    Log.d(TAG, " find USB audio input device, using I2S");
+                }
+                audioOutputDevice = findAudioDevice(AudioManager.GET_DEVICES_OUTPUTS, AudioDeviceInfo.TYPE_BUS);
+                if (audioOutputDevice == null) {
+                    Log.e(TAG, "failed to found I2S audio output device, using Unknow");
+                } else {
+                    Log.d(TAG, " find USB audio input device, using I2S");
+                }
+            } else {
+                Log.e(TAG, " find USB audio input device, using default");
+                audioInputDevice = findAudioDevice(AudioManager.GET_DEVICES_INPUTS, AudioDeviceInfo.TYPE_USB_DEVICE);
+                if (audioInputDevice == null) {
+                    Log.e(TAG, "failed to find I2S audio input device, using Unknow");
+                } else {
+                    Log.d(TAG, " find USB audio input device, using USB");
+                }
+                audioOutputDevice = findAudioDevice(AudioManager.GET_DEVICES_OUTPUTS, AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
+                if (audioOutputDevice == null) {
+                    Log.e(TAG, "failed to found 3.5mm audio output device, using Unknow");
+                } else {
+                    Log.d(TAG, " find 3.5mm audio input device, using 3.5mm");
+                }
             }
         }
 
         try {
             if (USE_VOICEHAT_I2S_DAC) {
+                Utils.checkPiDevice(this);
                 Log.i(TAG, "initializing DAC trigger");
                 mDac = VoiceHat.openDac();
                 mDac.setSdMode(Max98357A.SD_MODE_SHUTDOWN);
@@ -258,9 +292,14 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
 
                     @Override
                     public void onConversationFinished() {
-                        Log.i(TAG, "assistant conversation finished");
+                        Log.i(TAG, "sphinx assistant conversation finished");
                         mButtonWidget.setText(R.string.button_new_request);
                         mButtonWidget.setEnabled(true);
+
+                        //the user is done making their request. stop passing data and clean up
+                        Log.d(TAG, "sphinx the assistant request finish.");
+                        //okay we can activate via keyphrase again
+                        captechSphinxManager.startListeningToActivationPhrase();
                     }
 
                     @Override
@@ -316,6 +355,17 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
                 })
                 .build();
         mEmbeddedAssistant.connect();
+
+
+
+        //instantiate PSphinx
+        progressDialog.setMessage("Embedded Sphinx....");
+        captechSphinxManager = new CapTechSphinxManager(this, this);
+        LEDShining = true;
+
+        // TODO打開一盞燈！
+        LEDShining();
+        mHandler.postDelayed(runnable,60*1000);
     }
 
     private void setmLed(){
@@ -354,6 +404,8 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             Log.d(TAG, "error toggling LED:"+ e);
         }
         if (pressed) {
+            LyonTextToSpeech.speak(context,textToSpeech,AISay);
+            captechSphinxManager.SpeechRecognizerStop();
             mEmbeddedAssistant.startConversation();
         }
     }
@@ -387,5 +439,36 @@ public class AssistantActivity extends Activity implements Button.OnButtonEventL
             mDac = null;
         }
         mEmbeddedAssistant.destroy();
+    }
+
+
+
+    private void LEDShining(){
+        Log.e(TAG, "mLed LEDShining");
+        if(mLed!=null){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int i=0;
+                    while (LEDShining){
+                        try {
+                            mLed.setValue(true);
+                            Log.e(TAG, "mLed == on");
+                            Thread.sleep(250);
+                            mLed.setValue(false);
+                            Log.e(TAG, "mLed == off");
+                            Thread.sleep(200);
+                        } catch (IOException e) {
+                            Log.e(TAG,"Led IOException:"+e);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        i++;
+                    }
+                }
+            }).start();
+        }else{
+            Log.e(TAG, "mLed == null");
+        }
     }
 }

@@ -83,15 +83,15 @@ public class Utils {
     }
 
     public static boolean checkPiDevice(Context mContext){
-        boolean isTVDevice = false;
+        boolean isPiDevice = false;
         UiModeManager uiModeManager = (UiModeManager) mContext.getSystemService(UI_MODE_SERVICE);
         Log.d(TAG, "checkTVDevice Running on a Pi Device type:"+uiModeManager.getCurrentModeType());
-        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION) {
+        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_APPLIANCE) {
             Log.d(TAG, "checkTVDevice Running on a Pi Device");
-            isTVDevice = true;
+            isPiDevice = true;
         } else {
             Log.d(TAG, "checkTVDevice Running on a non-Pi Device");
         }
-        return isTVDevice;
+        return isPiDevice;
     }
 }

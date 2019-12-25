@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':grpc')
     compileOnly 'com.google.android.things:androidthings:1.0'
 
@@ -43,8 +44,12 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
+    //google voice hat AIY 驅動
     implementation 'com.google.android.things.contrib:driver-voicehat:1.0'
     implementation 'com.android.support:support-annotations:27.1.0'
     implementation 'androidx.core:core:1.1.0'
 
+    //20190803 sphinx
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+    implementation files('libs/pocketsphinx-android-5prealpha-release.aar')
 }
