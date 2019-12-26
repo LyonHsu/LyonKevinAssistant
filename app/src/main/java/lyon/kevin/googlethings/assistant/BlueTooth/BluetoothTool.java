@@ -304,7 +304,7 @@ public abstract class BluetoothTool {
             mHandler.post(runnable);
             openBluetoothTime(time);
             isSearchNow = true;
-            Toast.makeText(context,"Already on", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context,"Already on", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -375,6 +375,22 @@ public abstract class BluetoothTool {
                         connectingDevice = device;
                         AppController.getInstance().speak(context,"藍牙設備以連結");
                         Toast.makeText(context,"Connected to " + deviceName, Toast.LENGTH_LONG).show();
+                        String ipp =  "no connect wifi!";
+                        String ip =ipp;
+                        WifiManager wifiMan = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                        WifiInfo wifiInf = wifiMan.getConnectionInfo();
+                        int ipAddress = wifiInf.getIpAddress();
+                        ip= String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
+                        String IP=""+ip;
+                        String ssID = wifiInf.getSSID();
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("IP", IP);
+                            jsonObject.put("SSID", ssID);
+                            bluetoothWrite(jsonObject);
+                        }catch (JSONException e){
+                            Log.e(TAG,"");
+                        }
                     } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                         AppController.getInstance().speak(context,"藍牙設備以斷開");
                         Toast.makeText(context,"Disconnected from " + deviceName, Toast.LENGTH_LONG).show();
@@ -412,8 +428,11 @@ public abstract class BluetoothTool {
                                 jsonObject.put("IP", IP);
                                 jsonObject.put("SSID", ssID);
                                 bluetoothWrite(jsonObject);
+                                Log.d(TAG,"IP:"+jsonObject.toString());
                             }catch (JSONException e){
                                 Log.e(TAG,"");
+                            }catch (Exception e){
+
                             }
                             break;
                         case BluetoothService.STATE_CONNECTING:
@@ -579,7 +598,7 @@ public abstract class BluetoothTool {
     public void bluetoothWrite(JSONObject jsonObject){
         if(mService!=null){
             String jsonS = jsonObject.toString();
-//            android.util.Log.d(TAG,"bluetooth chatroom write: "+jsonS);
+            android.util.Log.d(TAG,"bluetooth chatroom write: "+jsonS);
             byte[] writeBuf = (byte[]) jsonS.getBytes();
             mService.write(writeBuf);
         }
