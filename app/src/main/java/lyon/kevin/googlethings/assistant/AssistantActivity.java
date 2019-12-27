@@ -227,7 +227,7 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                 .setRequestCallback(new RequestCallback() {
                     @Override
                     public void onRequestStart() {
-                        Log.i(TAG, "starting assistant request, enable microphones");
+                        Log.i(TAG, "20191227 starting assistant request, enable microphones");
                         mButtonWidget.setText(R.string.button_listening);
                         mButtonWidget.setEnabled(false);
                     }
@@ -235,9 +235,9 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                     @Override
                     public void onSpeechRecognition(List<SpeechRecognitionResult> results) {
                         for (final SpeechRecognitionResult result : results) {
-                            Log.i(TAG, "assistant request text: " + result.getTranscript() +
+                            Log.i(TAG, "20191227 assistant request text: " + result.getTranscript() +
                                 " stability: " + Float.toString(result.getStability()));
-                            mAssistantRequestsAdapter.add(result.getTranscript());
+                            mAssistantRequestsAdapter.add(result.getTranscript()+" stability: " + Float.toString(result.getStability()));
                         }
                     }
                 })
@@ -298,8 +298,7 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
 
                         //the user is done making their request. stop passing data and clean up
                         Log.d(TAG, "sphinx the assistant request finish.");
-                        //okay we can activate via keyphrase again
-                        captechSphinxManager.startListeningToActivationPhrase();
+
                     }
 
                     @Override
@@ -309,6 +308,9 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                                 @Override
                                 public void run() {
                                     mAssistantRequestsAdapter.add("Google Assistant: " + response);
+
+                                    //okay we can activate via keyphrase again
+                                    captechSphinxManager.startListeningToActivationPhrase();
                                 }
                             });
                         }

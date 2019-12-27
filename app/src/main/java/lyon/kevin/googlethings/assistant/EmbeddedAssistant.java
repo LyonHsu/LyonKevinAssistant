@@ -179,6 +179,9 @@ public class EmbeddedAssistant extends SphinxAssistant {
                             }
                         });
                         mMicrophoneMode = value.getDialogStateOut().getMicrophoneMode();
+                        //stop audioRecord That Sphinx can listant
+                        mAudioRecord.stop();
+
                         mConversationCallback.onAssistantResponse(value.getDialogStateOut()
                             .getSupplementalDisplayText());
                     }

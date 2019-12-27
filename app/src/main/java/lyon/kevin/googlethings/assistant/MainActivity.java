@@ -131,6 +131,7 @@ public class MainActivity extends AssistantActivity {
 //            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
             audioManager.setSpeakerphoneOn(true);
             int maVolume = audioManager.getStreamMaxVolume(systemName) / 3;
+            maVolume = audioManager.getStreamMaxVolume(systemName);
             audioManager.setStreamVolume(systemName, maVolume, AudioManager.FLAG_SHOW_UI);
             systemName = AudioManager.STREAM_MUSIC;//STREAM_RING
             maVolume = audioManager.getStreamMaxVolume(systemName);

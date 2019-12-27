@@ -123,7 +123,9 @@ public class CapTechSphinxManager implements RecognitionListener {
         }
 
         String text = hypothesis.getHypstr();
-        Log.e(TAG,"sphinx onPartialResult():"+text);
+        int  score= hypothesis.getBestScore();
+        int prob=hypothesis.getProb();
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onPartialResult():"+text+" score:"+score+" prob:"+prob);
         if (text.equals(MainConstant.ACTIVATION_KEYPHRASE)) {
             mSpeechRecognizer.stop();
         }
@@ -139,7 +141,9 @@ public class CapTechSphinxManager implements RecognitionListener {
         }
 
         String text = hypothesis.getHypstr();
-        Log.e(TAG,"sphinx onResult():"+text);
+        int  score= hypothesis.getBestScore();
+        int prob=hypothesis.getProb();
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onResult():"+text+" score:"+score+" prob:"+prob);
         if (MainConstant.ACTIVATION_KEYPHRASE.equals(text)) {
             mSphinxListener.onActivationPhraseDetected();
         }

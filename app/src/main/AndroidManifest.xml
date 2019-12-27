@@ -21,12 +21,12 @@ package="lyon.kevin.googlethings.assistant">
     <!--Audio mode set-->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
-    // 使用蓝牙设备的权限
+    <!--// 使用蓝牙设备的权限-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    // 管理蓝牙设备的权限
+    <!--// 管理蓝牙设备的权限-->
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="ndroid.permission.LOCATION_MAC_ADDRESS"/>
-    //进行蓝牙相关操作
+    <!--//进行蓝牙相关操作-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -47,13 +47,13 @@ package="lyon.kevin.googlethings.assistant">
               Uncomment the following intent filter block to enable this activity to
               launch automatically on boot, and re-launch if the app terminates.
             -->
-            <!--
-                        <intent-filter>
-                            <action android:name="android.intent.action.MAIN"/>
-                            <category android:name="android.intent.category.HOME"/>
-                            <category android:name="android.intent.category.DEFAULT"/>
-                        </intent-filter>
-            -->
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".NetWork.WifiSetting.WifiMenu"
