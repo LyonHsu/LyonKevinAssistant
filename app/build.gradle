@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "lyon.kevin.googlethings.assistant"
         minSdkVersion 27
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,13 +40,13 @@ dependencies {
     implementation project(':grpc')
     compileOnly 'com.google.android.things:androidthings:1.0'
 
-    implementation('com.google.auth:google-auth-library-oauth2-http:0.19.0') {
+    implementation('com.google.auth:google-auth-library-oauth2-http:0.6.0') {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 
     //google voice hat AIY 驅動
     implementation 'com.google.android.things.contrib:driver-voicehat:1.0'
-    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'com.android.support:support-annotations:27.1.0'
     implementation 'androidx.core:core:1.1.0'
 
     //20190803 sphinx
