@@ -123,12 +123,13 @@ public class CapTechSphinxManager implements RecognitionListener {
         }
 
         String text = hypothesis.getHypstr();
-        int  score= hypothesis.getBestScore();
-        int prob=hypothesis.getProb();
-        Log.e(TAG,"20191227 sphinx 聽到的文字 onPartialResult():"+text+" score:"+score+" prob:"+prob);
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onResult():"+text);
         if (text.equals(MainConstant.ACTIVATION_KEYPHRASE)) {
             mSpeechRecognizer.stop();
         }
+        int  score= hypothesis.getBestScore();
+        int prob=hypothesis.getProb();
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onPartialResult():"+text+" score:"+score+" prob:"+prob);
     }
 
     /**
@@ -141,12 +142,13 @@ public class CapTechSphinxManager implements RecognitionListener {
         }
 
         String text = hypothesis.getHypstr();
-        int  score= hypothesis.getBestScore();
-        int prob=hypothesis.getProb();
-        Log.e(TAG,"20191227 sphinx 聽到的文字 onResult():"+text+" score:"+score+" prob:"+prob);
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onResult():"+text);
         if (MainConstant.ACTIVATION_KEYPHRASE.equals(text)) {
             mSphinxListener.onActivationPhraseDetected();
         }
+        int  score= hypothesis.getBestScore();
+        int prob=hypothesis.getProb();
+        Log.e(TAG,"20191227 sphinx 聽到的文字 onResult():"+text+" score:"+score+" prob:"+prob);
     }
 
     @Override
@@ -165,7 +167,7 @@ public class CapTechSphinxManager implements RecognitionListener {
      * To be called for by the Assistant Activity.
      */
     public void startListeningToActivationPhrase() {
-        Log.e(TAG,"sphinx start Listening To Activation Phrase():");
+        Log.e(TAG,"20191227 sphinx start Listening To Activation Phrase():");
         mSpeechRecognizer.startListening(MainConstant.WAKEUP_SEARCH);
     }
 
@@ -181,6 +183,10 @@ public class CapTechSphinxManager implements RecognitionListener {
 
     public void SpeechRecognizerStop(){
         mSpeechRecognizer.stop();
+    }
+
+    public boolean getListeningState(){
+        return mSpeechRecognizer.isListentening;
     }
 
 }

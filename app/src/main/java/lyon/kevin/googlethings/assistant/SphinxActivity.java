@@ -87,8 +87,8 @@ public class SphinxActivity extends Activity implements CapTechSphinxManager.Sph
     @Override
     public void onActivationPhraseDetected() {
         // TODO開始我們的助理請求
-        Log.d(TAG, "Activation Phrase Detected");
-        LyonTextToSpeech.speak(context,textToSpeech,AISay);
+        Log.d(TAG, "Activation Phrase Detected :"+AISay);
+//        LyonTextToSpeech.speak(context,textToSpeech,AISay);
 
         ToastUtile.showText(this,"是的");
         mEmbeddedAssistant.setIsSpecialRequest(false);

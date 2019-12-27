@@ -39,6 +39,7 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
     private final Collection<RecognitionListener> listeners = new HashSet();
     private final boolean USE_VOICEHAT_I2S_DAC = Build.DEVICE.equals(BoardDefaults.DEVICE_RPI3);
     Context context;
+    boolean isListentening = false;
     protected LyonSpeechRecognizer(Context context, Config config) throws IOException {
         super(config);
         this.context=context;
@@ -87,40 +88,53 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
 
     public boolean startListening(String searchName) {
         if (null != this.recognizerThread) {
+            isListentening = false;
             return false;
         } else {
             Log.i(TAG, String.format("20191227 Start recognition \"%s\"", searchName));
             this.decoder.setSearch(searchName);
-            Hypothesis hypothesis = this.decoder.hyp();
-            if(hypothesis!=null) {
-                hypothesis.setBestScore(100);
-                hypothesis.setProb(100);
+            try {
+                Hypothesis hypothesis = this.decoder.hyp();
+                if (hypothesis != null) {
+                    hypothesis.setBestScore(100);
+                    hypothesis.setProb(100);
+                }
+            }catch (NullPointerException e){
+
             }
             this.recognizerThread = new LyonSpeechRecognizer.RecognizerThread();
             this.recognizerThread.start();
+            isListentening = true;
             return true;
         }
     }
 
     public boolean startListening(String searchName, int timeout) {
         if (null != this.recognizerThread) {
+            isListentening = false;
             return false;
         } else {
             Log.i(TAG, String.format("20191227 Start recognition \"%s\"", searchName));
             this.decoder.setSearch(searchName);
-            Hypothesis hypothesis = this.decoder.hyp();
-            if(hypothesis!=null) {
-                hypothesis.setBestScore(100);
-                hypothesis.setProb(100);
+            try {
+                Hypothesis hypothesis = this.decoder.hyp();
+                if (hypothesis != null) {
+                    hypothesis.setBestScore(100);
+                    hypothesis.setProb(100);
+                }
+            }catch (NullPointerException e){
+
             }
             this.recognizerThread = new LyonSpeechRecognizer.RecognizerThread(timeout);
             this.recognizerThread.start();
+            isListentening = true;
             return true;
         }
     }
 
     private boolean stopRecognizerThread() {
         if (null == this.recognizerThread) {
+            isListentening = false;
             return false;
         } else {
             try {
@@ -131,6 +145,7 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
             }
 
             this.recognizerThread = null;
+            isListentening = false;
             return true;
         }
     }
@@ -142,7 +157,7 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
             Hypothesis hypothesis = this.decoder.hyp();
             this.mainHandler.post(new LyonSpeechRecognizer.ResultEvent(hypothesis, true));
         }
-
+        isListentening = false;
         return result;
     }
 
@@ -151,7 +166,7 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
         if (result) {
             Log.i(TAG, "Cancel recognition");
         }
-
+        isListentening = false;
         return result;
     }
 
@@ -161,6 +176,7 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
 
     public void shutdown() {
         this.recorder.release();
+        isListentening = false;
     }
 
     public String getSearchName() {

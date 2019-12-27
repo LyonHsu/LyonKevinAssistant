@@ -75,7 +75,7 @@ public class EmbeddedAssistant extends SphinxAssistant {
     // Assistant Thread and Runnables implementing the push-to-talk functionality.
     private ByteString mConversationState;
     private String mLanguageCode = "en-US";
-    private AudioRecord mAudioRecord;
+    protected AudioRecord mAudioRecord;
     private DeviceLocation mDeviceLocation;
     private AudioInConfig mAudioInConfig;
     private AudioOutConfig mAudioOutConfig;
@@ -175,13 +175,15 @@ public class EmbeddedAssistant extends SphinxAssistant {
                         mRequestHandler.post(new Runnable() {
                             @Override
                             public void run() {
+
                                 mRequestCallback.onSpeechRecognition(value.getSpeechResultsList());
                             }
                         });
                         mMicrophoneMode = value.getDialogStateOut().getMicrophoneMode();
                         //stop audioRecord That Sphinx can listant
-                        mAudioRecord.stop();
+//                        mAudioRecord.stop();
 
+                        //assistant response
                         mConversationCallback.onAssistantResponse(value.getDialogStateOut()
                             .getSupplementalDisplayText());
                     }

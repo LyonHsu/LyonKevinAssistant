@@ -298,6 +298,9 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
 
                         //the user is done making their request. stop passing data and clean up
                         Log.d(TAG, "sphinx the assistant request finish.");
+                        mEmbeddedAssistant.mAudioRecord.stop();
+                        //okay we can activate via keyphrase again
+                        captechSphinxManager.startListeningToActivationPhrase();
 
                     }
 
@@ -308,12 +311,10 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                                 @Override
                                 public void run() {
                                     mAssistantRequestsAdapter.add("Google Assistant: " + response);
-
-                                    //okay we can activate via keyphrase again
-                                    captechSphinxManager.startListeningToActivationPhrase();
                                 }
                             });
                         }
+
                     }
 
                     @Override
