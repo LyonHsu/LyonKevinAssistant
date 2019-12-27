@@ -91,8 +91,11 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
         } else {
             Log.i(TAG, String.format("20191227 Start recognition \"%s\"", searchName));
             this.decoder.setSearch(searchName);
-            this.decoder.hyp().setBestScore(100);
-            this.decoder.hyp().setProb(100);
+            Hypothesis hypothesis = this.decoder.hyp();
+            if(hypothesis!=null) {
+                hypothesis.setBestScore(100);
+                hypothesis.setProb(100);
+            }
             this.recognizerThread = new LyonSpeechRecognizer.RecognizerThread();
             this.recognizerThread.start();
             return true;
@@ -105,8 +108,11 @@ public class LyonSpeechRecognizer extends SpeechRecognizer {
         } else {
             Log.i(TAG, String.format("20191227 Start recognition \"%s\"", searchName));
             this.decoder.setSearch(searchName);
-            this.decoder.hyp().setBestScore(100);
-            this.decoder.hyp().setProb(100);
+            Hypothesis hypothesis = this.decoder.hyp();
+            if(hypothesis!=null) {
+                hypothesis.setBestScore(100);
+                hypothesis.setProb(100);
+            }
             this.recognizerThread = new LyonSpeechRecognizer.RecognizerThread(timeout);
             this.recognizerThread.start();
             return true;
