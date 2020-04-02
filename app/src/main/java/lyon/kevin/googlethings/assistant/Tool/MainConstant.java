@@ -4,7 +4,7 @@ public class MainConstant {
     public final static int NO_DATA = -1;
     public static final int SPEAKTOGOTYPE = 1;
     public static final int CUSTOMERTYPE = 2;
-    public static final String ACTIVATION_KEYPHRASE = "hey google"; //friday ???? F R AY D IY ??? F UW L AY D EY
+    public static final String ACTIVATION_KEYPHRASE = "hey lisa"; //friday ???? F R AY D IY ??? F UW L AY D EY
     public static final String WAKEUP_SEARCH = "wakeup";
 
 
@@ -14,6 +14,6 @@ public class MainConstant {
     public static final int ACCESS_FINE_LOCATION = 4;
 
 
-    public static final String BlueToothName = "Hey google";
+    public static final String BlueToothName = ACTIVATION_KEYPHRASE;
 
 }

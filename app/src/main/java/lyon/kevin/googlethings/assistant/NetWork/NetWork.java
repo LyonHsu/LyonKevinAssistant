@@ -24,6 +24,7 @@ import lyon.kevin.googlethings.assistant.AppController;
 import lyon.kevin.googlethings.assistant.NetWork.WifiSetting.WifiMenu;
 import lyon.kevin.googlethings.assistant.R;
 import lyon.kevin.googlethings.assistant.Tool.Log;
+import lyon.kevin.googlethings.assistant.Tool.MainConstant;
 
 import static android.net.wifi.WifiManager.EXTRA_SUPPLICANT_ERROR;
 
@@ -81,7 +82,7 @@ public class NetWork extends RelativeLayout {
         SSIDTxt = (TextView)view.findViewById(R.id.SSIDTxt);
         IPTxt = (TextView)view.findViewById(R.id.IPTxt);
         networkTxt = (TextView)view.findViewById(R.id.networkTxt);
-        networkTxt.setText("Network:"+"    ver:"+getAppVersionName(context)+" "+getAppVersion(context));
+        networkTxt.setText("Network:"+"    ver:"+getAppVersionName(context)+" "+getAppVersion(context)+" Hot key:"+ MainConstant.ACTIVATION_KEYPHRASE);
         addView(view);
         getLocalIpAddress(context);
 //        setOnClickListener(new OnClickListener() {
