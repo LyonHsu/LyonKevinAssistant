@@ -37,7 +37,7 @@ public class MainActivity extends AssistantActivity {
     String TAG = MainActivity.class.getSimpleName();
     Context context;
     //Is Use Google AIY Device
-    public static boolean isGoogleAIY = true;
+    public static boolean isGoogleAIY = false;
     NetWork netWork;
 
 
@@ -50,6 +50,7 @@ public class MainActivity extends AssistantActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         AppController.getInstance().setAssistantActivity(this);
         context = this;
         Permission permission = new Permission();

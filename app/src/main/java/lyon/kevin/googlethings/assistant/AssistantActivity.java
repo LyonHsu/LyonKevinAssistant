@@ -237,8 +237,9 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                         for (final SpeechRecognitionResult result : results) {
                             Log.i(TAG, "20191227 assistant request text: " + result.getTranscript() +
                                 " stability: " + Float.toString(result.getStability()));
-                            mAssistantRequestsAdapter.add(result.getTranscript()+" stability: " + Float.toString(result.getStability()));
+                            mAssistantRequests.add(result.getTranscript()+" stability: " + Float.toString(result.getStability()));
                         }
+                        mAssistantRequestsAdapter.notifyDataSetChanged();
                     }
                 })
                 .setConversationCallback(new ConversationCallback() {
@@ -310,7 +311,9 @@ public class AssistantActivity extends SphinxActivity implements Button.OnButton
                             mMainHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mAssistantRequestsAdapter.add("Google Assistant: " + response);
+                                    mAssistantRequests.add("Google Assistant: " + response);
+                                    Log.i(TAG, "20191227 Google Assistant:: " + response);
+                                    mAssistantRequestsAdapter.notifyDataSetChanged();
                                 }
                             });
                         }

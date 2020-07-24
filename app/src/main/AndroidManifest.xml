@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="lyon.kevin.googlethings.assistant">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="lyon.kevin.googlethings.assistant">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -59,7 +60,8 @@ package="lyon.kevin.googlethings.assistant">
             android:name=".NetWork.WifiSetting.WifiMenu"
             android:screenOrientation="landscape" />
 
-        <service android:name=".BlueTooth.BluetoothService" android:enabled="true"/>
+        <service android:name=".BlueTooth.BluetoothService" android:enabled="true"
+            tools:ignore="Instantiatable" />
 
     </application>
 </manifest>
