@@ -4,11 +4,11 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "lyon.kevin.googlethings.assistant"
+        applicationId "lyon.kevin.googlethings.assistant"//com.lyon.androidthings.assistant
         minSdkVersion 27
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

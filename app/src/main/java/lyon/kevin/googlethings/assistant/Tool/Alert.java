@@ -3,6 +3,9 @@ package lyon.kevin.googlethings.assistant.Tool;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.wifi.WifiManager;
+
+import lyon.kevin.googlethings.assistant.R;
 
 /**
  * Created by Gordon on 2016/12/31.
@@ -15,14 +18,18 @@ public class Alert {
         dlgBuilder.setTitle(title);
         dlgBuilder.setMessage(message);
         dlgBuilder.setCancelable(false);
-        dlgBuilder.setPositiveButton(btnTitle, new DialogInterface.OnClickListener() {
+        dlgBuilder.setPositiveButton(context.getResources().getString(R.string.chance), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(true);
             }
         });
-        dlgBuilder.setNeutralButton(btnTitle, new DialogInterface.OnClickListener() {
+        dlgBuilder.setNeutralButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                wifiManager.setWifiEnabled(true);
             }
         });
         dlgBuilder.show();

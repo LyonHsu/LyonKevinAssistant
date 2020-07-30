@@ -20,4 +20,5 @@
 
     <string name="system_error">語音系統初始化錯誤！請重新安裝設定！</string>
     <string name="ok">確定</string>
+    <string name="chance">取消</string>
 </resources>

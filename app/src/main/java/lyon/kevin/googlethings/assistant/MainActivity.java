@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -47,7 +49,10 @@ public class MainActivity extends AssistantActivity {
     private static final int REQUEST_CODE = 2; // 请求码
     public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
     private android.widget.Button blueToothBtn;
-
+    private android.widget.Button wifihotsBtn;
+    private android.widget.Button wifiBtn;
+    private WifiManager wifiManager;
+    private boolean wifiManagerFlag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -261,8 +266,49 @@ public class MainActivity extends AssistantActivity {
                 }
             }
         });
+        //获取wifi管理服务
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiManager.setWifiEnabled(true);
+        wifihotsBtn = findViewById(R.id.wifihotsBtn);
+        wifihotsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiManagerFlag = !wifiManagerFlag;
+                boolean wifiApEnabled = setWifiApEnabled(wifiManagerFlag);
+                Log.d(TAG,"WifiConfiguration wifiApEnabled:"+wifiApEnabled);
+            }
+        });
+        wifiBtn = findViewById(R.id.wifiBtn);
+        wifiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiManager.setWifiEnabled(true);
+            }
+        });
+    }
 
-
+    // wifi热点开关
+    public boolean setWifiApEnabled(boolean enabled) {
+        if (enabled) { // disable WiFi in any case
+            //wifi和热点不能同时打开，所以打开热点的时候需要关闭wifi
+            wifiManager.setWifiEnabled(false);
+        }
+        try {
+            //热点的配置类
+            WifiConfiguration apConfig = new WifiConfiguration();
+            //配置热点的名称(可以在名字后面加点随机数什么的)
+            apConfig.SSID = bluetoothTool.getBluetoothName(MainConstant.BlueToothName+" Pi3_" + Build.MODEL);
+            //配置热点的密码
+            apConfig.preSharedKey="12341234";
+            //通过反射调用设置热点
+            Method method = wifiManager.getClass().getMethod(
+                    "setWifiApEnabled", WifiConfiguration.class, Boolean.TYPE);
+            //返回热点打开状态
+            return (Boolean) method.invoke(wifiManager, apConfig, enabled);
+        } catch (Exception e) {
+            Log.e(TAG,"WifiConfiguration Exception:"+Utils.FormatStackTrace(e));
+            return false;
+        }
     }
 
     private Handler handler = new Handler() {

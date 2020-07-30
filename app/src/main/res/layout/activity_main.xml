@@ -38,23 +38,43 @@
         android:id="@+id/controls"
         android:layout_height="wrap_content">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/button_new_request"
+            android:layout_weight="1"
             android:background="@drawable/btn_blue"
             android:layout_centerHorizontal="true"
             android:id="@+id/assistantQueryButton" />
         <Button
-            android:id="@+id/blueToothBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/wifihotsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:background="@drawable/btn_blue"
+            android:text="wifi hots connect" />
+        <Button
+            android:id="@+id/wifiBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_blue"
+            android:text="wifi on/off" />
+        <Button
+            android:id="@+id/blueToothBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
             android:background="@drawable/btn_blue"
             android:text="bluetooth connect" />
         <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/htmlOutput"
+            android:layout_weight="1"
             android:layout_marginLeft="5dp"
             android:background="@drawable/btn_blue"
             android:text="HTML Output"/>
