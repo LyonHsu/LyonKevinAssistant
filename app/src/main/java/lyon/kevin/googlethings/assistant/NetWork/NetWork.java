@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.text.format.Time;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +21,14 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
 
 import lyon.kevin.googlethings.assistant.AppController;
 import lyon.kevin.googlethings.assistant.NetWork.WifiSetting.WifiMenu;
@@ -38,7 +48,7 @@ public class NetWork extends RelativeLayout {
     Context context ;
     View view;
     ImageView netWorkIcon;
-    TextView SSIDTxt,IPTxt,networkTxt;
+    TextView SSIDTxt,IPTxt,networkTxt,sysTime;
     OnWifiStatusListener onWifiStatusListener=null;
     public static interface OnWifiStatusListener{
         void wifiStatue(NetworkInfo.DetailedState status);
@@ -71,6 +81,31 @@ public class NetWork extends RelativeLayout {
         init();
     }
 
+    private void getTWSystime(){
+        Calendar now = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日",Locale.TAIWAN);
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss  EEEE",Locale.TAIWAN);
+        int YEAR = now.get(Calendar.YEAR);
+        int MONTH = now.get(Calendar.MONTH);
+        int DAY_OF_MONTH = now.get(Calendar.DAY_OF_MONTH);
+        int Hour = now.get(Calendar.HOUR);
+        int MINUTE = now.get(Calendar.MINUTE);
+        if(Hour+8>24){
+            Hour = Hour+8-24;
+        }else{
+            Hour = Hour+8;
+        }
+        now.set(
+                YEAR,
+                MONTH,
+                DAY_OF_MONTH,
+                Hour,
+                MINUTE
+        );
+        String formattedDate = formatter.format(now.getTime());
+        String time2= time.format(now.getTime());
+        sysTime.setText(formattedDate+"\n"+time2);
+    }
 
 
     private void init(){
@@ -82,7 +117,10 @@ public class NetWork extends RelativeLayout {
         SSIDTxt = (TextView)view.findViewById(R.id.SSIDTxt);
         IPTxt = (TextView)view.findViewById(R.id.IPTxt);
         networkTxt = (TextView)view.findViewById(R.id.networkTxt);
-        networkTxt.setText("Network:"+"    ver:"+getAppVersionName(context)+" "+getAppVersion(context)+" Hot key:"+ MainConstant.ACTIVATION_KEYPHRASE);
+        networkTxt.setText("Network:"+"    ver:"+getAppVersionName(context)+" "+getAppVersion(context)+"\nHot key:"+ MainConstant.ACTIVATION_KEYPHRASE);
+        sysTime = (TextView)view.findViewById(R.id.sysTime);
+        getTWSystime();
+        handler.postDelayed(getTimeRunnable,500);
         addView(view);
         getLocalIpAddress(context);
 //        setOnClickListener(new OnClickListener() {
@@ -119,6 +157,15 @@ public class NetWork extends RelativeLayout {
                 int error = intent.getIntExtra(EXTRA_SUPPLICANT_ERROR, 0);
 
             }
+        }
+    };
+
+    Handler handler = new Handler();
+    Runnable getTimeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            handler.postDelayed(getTimeRunnable,500);
+            getTWSystime();
         }
     };
 
